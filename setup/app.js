@@ -29,7 +29,7 @@ const menu = [
     category: "breakfast",
     price: 20.99,
     img: "./images/item-4.jpeg",
-    desc: `Shabby chic keffiyeh neutra snackwave pork belly shoreditch. Prism austin mlkshk truffaut, `,
+    desc: `Shabby chic keffiyeh neutra snackwave pork belly shoreditch. Prism austin mlkshk truffaut. `,
   },
   {
     id: 5,
@@ -71,4 +71,62 @@ const menu = [
     img: "./images/item-9.jpeg",
     desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
   },
+  {
+    id: 10,
+    title: "dinner buddy",
+    category: "dinner",
+    price: 16.99,
+    img: "./images/item-10.jpeg",
+    desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
+  },
+  
 ];
+
+const sectionCenter = document.querySelector(".section-center");
+const btnContainer = document.querySelector(".btn-container");
+const filterBtns = document.querySelectorAll(".filter-btn");
+// display all items when page loads
+window.addEventListener("DOMContentLoaded", function () {
+  diplayMenuItems(menu);
+});
+
+filterBtns.forEach(function (btn) {
+  btn.addEventListener("click", function (e) {
+    // console.log(e.currentTarget.dataset);
+    const category = e.currentTarget.dataset.id;
+    const menuCategory = menu.filter(function (menuItem) {
+      // console.log(menuItem.category);
+      if (menuItem.category === category) {
+        return menuItem;
+      }
+    });
+    if (category === "all") {
+      diplayMenuItems(menu);
+    } else {
+      diplayMenuItems(menuCategory);
+    }
+  });
+});
+
+function diplayMenuItems(menuItems) {
+  let displayMenu = menuItems.map(function (item) {
+    // console.log(item);
+
+    return `<article class="menu-item">
+          <img src=${item.img} alt=${item.title} class="photo" />
+          <div class="item-info">
+            <header>
+              <h4>${item.title}</h4>
+              <h4 class="price">$${item.price}</h4>
+            </header>
+            <p class="item-text">
+              ${item.desc}
+            </p>
+          </div>
+        </article>`;
+  });
+  displayMenu = displayMenu.join("");
+  // console.log(displayMenu);
+
+  sectionCenter.innerHTML = displayMenu;
+}
