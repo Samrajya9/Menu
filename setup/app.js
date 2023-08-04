@@ -84,29 +84,45 @@ const menu = [
 
 const sectionCenter = document.querySelector(".section-center");
 const btnContainer = document.querySelector(".btn-container");
-const filterBtns = document.querySelectorAll(".filter-btn");
+
+
+
 // display all items when page loads
 window.addEventListener("DOMContentLoaded", function () {
   diplayMenuItems(menu);
-});
-
-filterBtns.forEach(function (btn) {
-  btn.addEventListener("click", function (e) {
-    // console.log(e.currentTarget.dataset);
-    const category = e.currentTarget.dataset.id;
-    const menuCategory = menu.filter(function (menuItem) {
-      // console.log(menuItem.category);
-      if (menuItem.category === category) {
-        return menuItem;
+  const categories = menu.reduce(function(value,item){
+    if(!value.includes(item.category)){
+      value.push(item.category)
+    }
+    return value;
+  },["all"]);
+  let categoryBtns= categories.map(function(category){
+    return `<button class="filter-btn" type="button" data-id="${category}">${category}</button>`
+  });
+  dispalyCategoryBtns = categoryBtns.join(' ');
+  console.log(dispalyCategoryBtns);
+  btnContainer.innerHTML = dispalyCategoryBtns
+  const filterBtns = document.querySelectorAll(".filter-btn");
+  filterBtns.forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
+      console.log(e.currentTarget.dataset);
+      const category = e.currentTarget.dataset.id;
+      const menuCategory = menu.filter(function (menuItem) {
+        // console.log(menuItem.category);
+        if (menuItem.category === category) {
+          return menuItem;
+        }
+      });
+      if (category === "all") {
+        diplayMenuItems(menu);
+      } else {
+        diplayMenuItems(menuCategory);
       }
     });
-    if (category === "all") {
-      diplayMenuItems(menu);
-    } else {
-      diplayMenuItems(menuCategory);
-    }
   });
 });
+
+
 
 function diplayMenuItems(menuItems) {
   let displayMenu = menuItems.map(function (item) {
